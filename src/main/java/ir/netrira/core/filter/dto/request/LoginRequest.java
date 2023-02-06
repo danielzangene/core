@@ -2,26 +2,25 @@ package ir.netrira.core.filter.dto.request;
 
 import javax.validation.constraints.NotBlank;
 
-public class LoginRequest {
-	@NotBlank
-  private String username;
+public class LoginRequest extends AuthRequest {
+    @NotBlank
+    private String captcha;
+    @NotBlank
+    private String captchaId;
 
-	@NotBlank
-	private String password;
+    public String getCaptcha() {
+        return captcha;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public void setCaptcha(String captcha) {
+        this.captcha = captcha;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public String getCaptchaId() {
+        return captchaId;
+    }
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setCaptchaId(String captchaId) {
+        this.captchaId = captchaId;
+    }
 }

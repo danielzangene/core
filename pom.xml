@@ -87,6 +87,16 @@
             <version>0.9.1</version>
         </dependency>
         <dependency>
+            <groupId>cn.apiclub.tool</groupId>
+            <artifactId>simplecaptcha</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.0</version>
+        </dependency>
+        <dependency>
             <groupId>ir.ghasemkiani</groupId>
             <artifactId>persiancalendar</artifactId>
             <version>2.1.7</version>

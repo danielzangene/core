@@ -2,7 +2,7 @@ package ir.netrira.core.filter.dto.request;
 
 import javax.validation.constraints.*;
 
-public class SignupRequest extends LoginRequest {
+public class SignupRequest extends AuthRequest {
   @NotBlank
   @Size(max = 50)
   @Email
