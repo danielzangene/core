@@ -37,7 +37,7 @@ public class CaptchaUtils {
     }
 
     public static CaptchaResponse generateNumericalCaptchaResponse(int width, int height) {
-        Captcha captcha = CaptchaUtils.generateNumericalCaptcha(100, 50);
+        Captcha captcha = CaptchaUtils.generateNumericalCaptcha(width, height);
         String captchaImage = CaptchaUtils.convertToBase64(captcha);
         String captchaId = CaptchaUtils.getCaptchaId(captcha.getAnswer());
         return new CaptchaResponse(captchaImage, captchaId);
