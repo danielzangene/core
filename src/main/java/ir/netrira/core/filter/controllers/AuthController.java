@@ -4,12 +4,13 @@ import ir.netrira.core.ResponseConstant;
 import ir.netrira.core.ResponseConstantMessage;
 import ir.netrira.core.exception.BusinessException;
 import ir.netrira.core.exception.DataResponse;
+import ir.netrira.core.filter.dto.request.AuthRequest;
 import ir.netrira.core.filter.dto.request.LoginRequest;
 import ir.netrira.core.filter.dto.request.SignupRequest;
 import ir.netrira.core.filter.dto.response.CaptchaResponse;
 import ir.netrira.core.filter.dto.response.LoginResponse;
 import ir.netrira.core.filter.repository.UserRepository;
-import ir.netrira.core.filter.utils.CaptchaUtils;
+import ir.netrira.core.filter.utils.captcha.CaptchaUtils;
 import ir.netrira.core.filter.utils.JwtUtils;
 import ir.netrira.core.models.personnel.personnel.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,19 +45,20 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request) {
-        String captcha = (String) request.getSession().getAttribute("captcha");
         validateCaptcha(loginRequest);
+        return getAuthResponseToken(loginRequest);
+    }
+
+    private ResponseEntity<DataResponse> getAuthResponseToken(AuthRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken();
         return ResponseEntity.ok(DataResponse.SUCCESS_RESPONSE.setResultData(new LoginResponse(jwt)));
     }
 
     private void validateCaptcha(LoginRequest loginRequest) {
-        if (CaptchaUtils.isValidCaptcha(loginRequest.getCaptcha(), loginRequest.getCaptchaId())) {
-            throw new BusinessException(ResponseConstant.INVALID_CAPTCHA, ResponseConstantMessage.INVALID_CAPTCHA);
-        }
+        CaptchaUtils.validateCaptcha(loginRequest.getCaptcha(), loginRequest.getCaptchaId());
     }
 
     @PostMapping("/signup")
@@ -78,8 +80,7 @@ public class AuthController {
         );
         userRepository.save(user);
 
-        String jwt = jwtUtils.generateJwtToken();
-        return ResponseEntity.ok(DataResponse.SUCCESS_RESPONSE.setResultData(new LoginResponse(jwt)));
+        return getAuthResponseToken(signUpRequest);
     }
 
     @PatchMapping("/captcha")

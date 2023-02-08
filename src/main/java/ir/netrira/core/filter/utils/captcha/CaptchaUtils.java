@@ -1,38 +1,39 @@
-package ir.netrira.core.filter.utils;
+package ir.netrira.core.filter.utils.captcha;
 
 import cn.apiclub.captcha.Captcha;
 import cn.apiclub.captcha.backgrounds.GradiatedBackgroundProducer;
 import cn.apiclub.captcha.noise.CurvedLineNoiseProducer;
 import cn.apiclub.captcha.text.producer.NumbersAnswerProducer;
 import cn.apiclub.captcha.text.renderer.DefaultWordRenderer;
+import ir.netrira.core.ResponseConstant;
+import ir.netrira.core.ResponseConstantMessage;
+import ir.netrira.core.exception.BusinessException;
 import ir.netrira.core.filter.dto.response.CaptchaResponse;
-import org.apache.commons.collections4.map.PassiveExpiringMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
 import java.io.ByteArrayOutputStream;
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 
 @Component
 public class CaptchaUtils {
+
     private static final Logger logger = LoggerFactory.getLogger(CaptchaUtils.class);
 
-    private static final long CAPTCHA_EXPIRY_TIME = 60000;
+    private static CaptchaModelRepository captchaModelRepository;
 
-    private static Map captchaCodeMap = new PassiveExpiringMap<String, String>(CAPTCHA_EXPIRY_TIME);
-
-    public static SecureRandom random = new SecureRandom();
+    @Autowired
+    private CaptchaUtils(CaptchaModelRepository captchaModelRepository) {
+        CaptchaUtils.captchaModelRepository = captchaModelRepository;
+    }
 
     public static String getCaptchaId(String captchaAnswer) {
-        String id = new BigInteger(64, random).toString(32);
-        captchaCodeMap.put(id, captchaAnswer);
-        return id;
+        CaptchaModel captchaModel = captchaModelRepository.save(new CaptchaModel().setAnswer(captchaAnswer));
+        return captchaModel.getId();
     }
 
     public static CaptchaResponse generateNumericalCaptchaResponse(int width, int height) {
@@ -63,7 +64,14 @@ public class CaptchaUtils {
         return image;
     }
 
-    public static boolean isValidCaptcha(String answer, String captchaId) {
-        return Objects.isNull(answer) || !answer.equals(captchaCodeMap.get(captchaId));
+    public static void validateCaptcha(String answer, String captchaId) {
+        Optional<CaptchaModel> captchaModelOptional = captchaModelRepository.findById(captchaId);
+        if(captchaModelOptional.isEmpty()){
+            throw new BusinessException(ResponseConstant.CAPTCHA_NOT_FOUND, ResponseConstantMessage.CAPTCHA_NOT_FOUND);
+        }
+        if (!captchaModelOptional.get().getAnswer().equals(answer)){
+            throw new BusinessException(ResponseConstant.INVALID_CAPTCHA, ResponseConstantMessage.INVALID_CAPTCHA);
+
+        }
     }
 }

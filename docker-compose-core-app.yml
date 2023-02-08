@@ -1,23 +1,6 @@
 version: "3.8"
 services:
-  mysqldb:
-    image: mysql:5.7
-    restart: unless-stopped
-    env_file: .env
-    environment:
-      - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
-      - MYSQL_DATABASE=$MYSQLDB_DATABASE
-    command: --character-set-server=utf8 --collation-server=utf8_general_ci
-    ports:
-      - '3306:3306'
-    volumes:
-      - db:/var/lib/mysql
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-p${MYSQLDB_ROOT_PASSWORD}" ]
-      retries: 3
-      timeout: 5s
-
-  app:
+  core-app:
     build: .
     restart: always
     env_file: ./.env
@@ -33,6 +16,7 @@ services:
         "spring.datasource.password" : "$MYSQLDB_ROOT_PASSWORD",
         "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
         "spring.jpa.hibernate.ddl-auto" : "create",
+        "core.redis.pass" : "$REDIS_ROOT_PASSWORD",
         "core.app.jwtSecret" : "$JWT_SECTER_KEY",
         "core.app.jwtExpirationMs" : "$JWT_EXPIRATION_MS"
       }'
@@ -40,6 +24,3 @@ services:
       - .m2:/root/.m2
     stdin_open: true
     tty: true
-
-volumes:
-  db:

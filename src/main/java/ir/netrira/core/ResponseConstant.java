@@ -52,6 +52,7 @@ public interface ResponseConstant {
     Integer USERNAME_EXIST = 1000002;
     Integer USERNAME_NOT_EXIST = 1000003;
     Integer INVALID_CAPTCHA = 1000004;
+    Integer CAPTCHA_NOT_FOUND = 1000005;
 
     // ** footWorkCodes  1000000 -> 1005000
 

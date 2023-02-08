@@ -51,6 +51,7 @@ public interface ResponseConstantMessage {
     String USERNAME_NOT_EXIST  = "نام کاربری وارد شده در سیستم موجود نمی باشد";
     String INVALID_LOGIN_DATA = "نام کاربری یا رمزعبور به درستی وارد نشده.";
     String INVALID_CAPTCHA = "عبارت امنیتی به درستی وارد نشده.";
+    String CAPTCHA_NOT_FOUND = "مدت زمان استفاده از عبارت امنیتی منقضی شده، لطفا مجدد امتحان کتید.";
 
     String INVALID_FOOT_WORK_LOG_DATA = "ساعت ورود/خروج را به درستی وارد نشده.";
     String INVALID_FOOT_WORK_LOG_ID  = "ایدی لاگ مورد نظر به درستی وارد نشده.";
