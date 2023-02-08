@@ -4,6 +4,7 @@ import ir.netrira.core.ResponseConstant;
 import ir.netrira.core.ResponseConstantMessage;
 import ir.netrira.core.application.utils.DateUtil;
 import ir.netrira.core.business.management.calendar.CalendarRepo;
+import ir.netrira.core.business.management.calendar.CalendarUtil;
 import ir.netrira.core.business.management.element.TypeRepo;
 import ir.netrira.core.business.management.element.dto.ElementDto;
 import ir.netrira.core.business.management.element.dto.TypeDto;
@@ -47,7 +48,7 @@ public class Initializer {
 //        persistElement();
 //
 //        initCalendar(1400,1);
-//        initCalendar(1401,2);
+        initCalendar(1401,2);
 //        initCalendar(1402,3);
 
 //        initShaHrivarDiningItems();
@@ -71,6 +72,7 @@ public class Initializer {
                                     .setYear(year)
                                     .setMonth(month)
                                     .setDay(day)
+                                    .setId(date)
                                     .setDate(date)
                                     .setDayOfWeek(dayOfWeek)
                                     .setWeek(week)
@@ -79,7 +81,7 @@ public class Initializer {
                     firstDayOfYearWeekNumber++;
                 }
             }
-            calendarRepo.delete(calendarRepo.findByDate(DateUtil.getDate(year, 12, 30)).get());
+            calendarRepo.deleteById(calendarRepo.findById(DateUtil.getDate(year, 12, 30)).get().getId());
             initOffOfficialDays(StaticValues.offOfficialDays.get(year));
         }
     }
@@ -87,7 +89,7 @@ public class Initializer {
     private void initOffOfficialDays(List<String> days) {
         if (Objects.nonNull(days))
             days.parallelStream().forEach(day ->
-                    calendarRepo.findByDate(day).ifPresent(date -> {
+                    calendarRepo.findById(day).ifPresent(date -> {
                         calendarRepo.save(date.setOff(Boolean.TRUE));
                     })
             );
