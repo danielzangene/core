@@ -48,7 +48,7 @@ public class Initializer {
 //        persistElement();
 //
 //        initCalendar(1400,1);
-        initCalendar(1401,2);
+//        initCalendar(1401,2);
 //        initCalendar(1402,3);
 
 //        initShaHrivarDiningItems();
