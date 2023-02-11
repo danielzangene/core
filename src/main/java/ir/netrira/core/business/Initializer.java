@@ -128,9 +128,7 @@ public class Initializer {
                 Optional<Element> elementOptional = elementRepo.findByCode(elm.getCode());
                 if (!elementOptional.isPresent()) {
                     Type type = typeRepo.findByCode(elm.getTypeCode()).orElseThrow(() -> {
-                        throw new BusinessException(
-                                ResponseConstant.INVALID_FOOT_WORK_LOG_ID,
-                                ResponseConstantMessage.INVALID_FOOT_WORK_LOG_ID);
+                        throw new BusinessException(ResponseConstant.ELEMENT_EXIST, ResponseConstantMessage.ELEMENT_EXIST);
                     });
                     Element element = new Element();
                     element.setType(type);

@@ -54,17 +54,9 @@ public interface ResponseConstant {
     Integer INVALID_CAPTCHA = 1000004;
     Integer CAPTCHA_NOT_FOUND = 1000005;
 
-    // ** footWorkCodes  1000000 -> 1005000
-
-    Integer INVALID_FOOT_WORK_LOG_DATA = 1005001;
-    Integer INVALID_FOOT_WORK_LOG_ID = 1005002;
-
-    // ** leaveRequestCodes  1000000 -> 1005000
-
-    Integer INVALID_LEAVE_REQUEST_LOG_DATA = 1006001;
-    Integer INVALID_LEAVE_REQUEST_LOG_ID = 1006002;
-
-    //dining 101000
-    Integer INVALID_DINING_MONTH_FROM_NOW = 101001;
+    // ** general business  1005000
+    Integer ELEMENT_EXIST = 1005001;
+    Integer CONFIG_NOT_FOUND = 1005002;
+    Integer CAN_NOT_CONVERT_TO_JSON = 1005003;
 
 }
