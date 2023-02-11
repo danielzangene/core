@@ -2,7 +2,7 @@ package ir.netrira.core.filter.utils.captcha;
 
 import cn.apiclub.captcha.Captcha;
 import cn.apiclub.captcha.backgrounds.GradiatedBackgroundProducer;
-import cn.apiclub.captcha.noise.CurvedLineNoiseProducer;
+import cn.apiclub.captcha.noise.StraightLineNoiseProducer;
 import cn.apiclub.captcha.text.producer.NumbersAnswerProducer;
 import cn.apiclub.captcha.text.renderer.DefaultWordRenderer;
 import ir.netrira.core.ResponseConstant;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
 import java.util.Optional;
@@ -31,7 +32,7 @@ public class CaptchaUtils {
         CaptchaUtils.captchaModelRepository = captchaModelRepository;
     }
 
-    public static String getCaptchaId(String captchaAnswer) {
+    private static String getCaptchaId(String captchaAnswer) {
         CaptchaModel captchaModel = captchaModelRepository.save(new CaptchaModel().setAnswer(captchaAnswer));
         return captchaModel.getId();
     }
@@ -39,19 +40,19 @@ public class CaptchaUtils {
     public static CaptchaResponse generateNumericalCaptchaResponse(int width, int height) {
         Captcha captcha = CaptchaUtils.generateNumericalCaptcha(width, height);
         String captchaImage = CaptchaUtils.convertToBase64(captcha);
-        String captchaId = CaptchaUtils.getCaptchaId(captcha.getAnswer());
+        String captchaId = getCaptchaId(captcha.getAnswer());
         return new CaptchaResponse(captchaImage, captchaId);
     }
 
-    public static Captcha generateNumericalCaptcha(int width, int height) {
+    private static Captcha generateNumericalCaptcha(int width, int height) {
         return new Captcha.Builder(width, height)
                 .addBackground(new GradiatedBackgroundProducer())
-                .addText(new NumbersAnswerProducer(), new DefaultWordRenderer())
-                .addNoise(new CurvedLineNoiseProducer())
+                .addText(new NumbersAnswerProducer(5), new DefaultWordRenderer())
+                .addNoise(new StraightLineNoiseProducer(Color.GRAY, 4))
                 .build();
     }
 
-    public static String convertToBase64(Captcha captcha) {
+    private static String convertToBase64(Captcha captcha) {
         String image = null;
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -66,10 +67,10 @@ public class CaptchaUtils {
 
     public static void validateCaptcha(String answer, String captchaId) {
         Optional<CaptchaModel> captchaModelOptional = captchaModelRepository.findById(captchaId);
-        if(captchaModelOptional.isEmpty()){
+        if (captchaModelOptional.isEmpty()) {
             throw new BusinessException(ResponseConstant.CAPTCHA_NOT_FOUND, ResponseConstantMessage.CAPTCHA_NOT_FOUND);
         }
-        if (!captchaModelOptional.get().getAnswer().equals(answer)){
+        if (!captchaModelOptional.get().getAnswer().equals(answer)) {
             throw new BusinessException(ResponseConstant.INVALID_CAPTCHA, ResponseConstantMessage.INVALID_CAPTCHA);
 
         }

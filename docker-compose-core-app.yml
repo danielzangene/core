@@ -1,12 +1,9 @@
 version: "3.8"
 services:
-  core-app:
+  app:
     build: .
     restart: always
     env_file: ./.env
-    depends_on:
-      mysqldb:
-        condition: service_healthy
     ports:
       - '8080:8080'
     environment:
@@ -17,6 +14,8 @@ services:
         "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
         "spring.jpa.hibernate.ddl-auto" : "create",
         "core.redis.pass" : "$REDIS_ROOT_PASSWORD",
+        "core.redis.hostname" : "$REDIS_ROOT_HOSTNAME",
+        "core.redis.port" : "$REDIS_ROOT_PORT",
         "core.app.jwtSecret" : "$JWT_SECTER_KEY",
         "core.app.jwtExpirationMs" : "$JWT_EXPIRATION_MS"
       }'
