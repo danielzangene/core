@@ -27,23 +27,20 @@ public class ConfigUtils {
         ConfigUtils.configModelRepository = captchaModelRepository;
     }
 
-    public static ConfigModel saveConfig(String code, String typeCode, String value) {
+    public static ConfigModel saveConfig(String code, String parentId, String value) {
         ConfigModel configModel = new ConfigModel()
                 .setCode(code)
-                .setId(code)
                 .setValue(value)
-                .setTypeCode(typeCode);
+                .setParentId(parentId);
         return configModelRepository.save(configModel);
     }
 
     @Deprecated
-    public static ConfigModel saveConfig(String code, String typeCode, Object value) {
-
+      public static ConfigModel saveConfig(String code, String parentId, Object value) {
         ConfigModel configModel = new ConfigModel()
                 .setCode(code)
-                .setId(code)
                 .setValue(getJson(value))
-                .setTypeCode(typeCode);
+                .setParentId(parentId);
         return configModelRepository.save(configModel);
     }
 
@@ -66,19 +63,18 @@ public class ConfigUtils {
         }
     }
 
-    public static List<ConfigModel> getConfigs(String codeType) {
-        return configModelRepository.findAllByTypeCode(codeType);
+    public static List<ConfigModel> getConfigs(String parentId) {
+        return configModelRepository.findAllByParentId(parentId);
     }
 
     public static List<ConfigModel> getAllConfig() {
         return StreamSupport.stream(configModelRepository.findAll().spliterator(), Boolean.TRUE).collect(Collectors.toList());
     }
 
-    public static List<ConfigModel> getAllMainTypes() {
+    public static List<ConfigModel> getAllMainNodes() {
         return StreamSupport.stream(configModelRepository.findAll().spliterator(), Boolean.TRUE)
-                .filter(config -> Objects.isNull(config.getTypeCode()))
+                .filter(config -> Objects.isNull(config.getParentId()))
                 .collect(Collectors.toList());
     }
-
 
 }

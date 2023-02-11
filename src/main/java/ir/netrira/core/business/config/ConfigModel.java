@@ -18,7 +18,7 @@ public class ConfigModel implements Serializable {
     @Indexed
     private String code;
     @Indexed
-    private String typeCode;
+    private String parentId;
     private String value;
 
 }
