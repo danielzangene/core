@@ -1,27 +1,23 @@
 package ir.netrira.core.business;
 
-import ir.netrira.core.ResponseConstant;
-import ir.netrira.core.ResponseConstantMessage;
-import ir.netrira.core.application.utils.DateUtil;
-import ir.netrira.core.business.management.calendar.CalendarRepo;
-import ir.netrira.core.business.management.calendar.CalendarUtil;
-import ir.netrira.core.business.management.element.TypeRepo;
-import ir.netrira.core.business.management.element.dto.ElementDto;
-import ir.netrira.core.business.management.element.dto.TypeDto;
+import ir.netrira.core.application.filter.access.AccessFilter;
+import ir.netrira.core.application.utils.calendar.Calendar;
+import ir.netrira.core.application.utils.calendar.CalendarRepo;
+import ir.netrira.core.application.utils.calendar.DateUtil;
+import ir.netrira.core.application.utils.element.Element;
+import ir.netrira.core.application.utils.element.ElementRepo;
+import ir.netrira.core.application.utils.element.dto.ElementDto;
 import ir.netrira.core.business.tmp.StaticValues;
-import ir.netrira.core.exception.BusinessException;
-import ir.netrira.core.filter.filter.AccessFilter;
-import ir.netrira.core.models.management.Calendar;
-import ir.netrira.core.models.management.Type;
-import ir.netrira.core.business.management.element.ElementRepo;
-import ir.netrira.core.models.management.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 
 @Component
@@ -31,31 +27,37 @@ public class Initializer {
     @Autowired
     ElementRepo elementRepo;
     @Autowired
-    TypeRepo typeRepo;
-    @Autowired
     CalendarRepo calendarRepo;
 
     private List<ElementDto> elements = new LinkedList<>();
-    private List<TypeDto> types = new LinkedList<>();
 
 
     @PostConstruct
     private void init() {
-//        addElement();
-//        addTypes();
-//
-//        persistType();
-//        persistElement();
-//
-//        initCalendar(1400,1);
-//        initCalendar(1401,2);
-//        initCalendar(1402,3);
 
-//        initShaHrivarDiningItems();
-//        initMehrDiningItems();
-
+//        Element action_types = elementRepo.save(new Element().setCode("ACTION_TYPES"));
+//        Element firstType = elementRepo.save(new Element().setCode("FIRST_TYPES").setName("اولی").setRoot(action_types));
+//        Element secondType = elementRepo.save(new Element().setCode("SECOND_TYPES").setName("اولی").setRoot(action_types));
+        List<Element> action_types = elementRepo.findByRoot_Id("6d1e2bf4-0a39-46e4-a858-88dbe9b08ae6");
+        System.out.println();
+//        initElement();
+//        initCalendar();
     }
 
+    private void initCalendar() {
+        initCalendar(1395,1);
+        initCalendar(1396,3);
+        initCalendar(1397,4);
+        initCalendar(1398,5);
+        initCalendar(1399,6);
+
+        initCalendar(1400,1);
+        initCalendar(1401,2);
+        initCalendar(1402,3);
+        initCalendar(1403,4);
+        initCalendar(1404,6);
+        initCalendar(1405,0);
+    }
 
 
     private void initCalendar(Integer year, Integer firstDayOfYearWeekNumber) {
@@ -96,42 +98,18 @@ public class Initializer {
     }
 
 
-    private void addTypes() {
-
-    }
-
     private void addElement() {
 
-
     }
 
-    private void persistType() {
-        for (TypeDto tp : types) {
-            try {
-                Optional<Type> typeOptional = typeRepo.findByCode(tp.getCode());
-                if (!typeOptional.isPresent()) {
-                    Type type = new Type();
-                    type.setCode(tp.getCode());
-                    typeRepo.save(type);
-                    logger.info("TYPE PERSISTS: " + type.getCode());
-                }
-            } catch (Exception e) {
-                logger.error("TYPE NOT PERSISTS: " + tp.getCode());
-            }
-        }
-
-    }
-
-    private void persistElement() {
+    private void initElement() {
+        addElement();
         for (ElementDto elm : elements) {
             try {
                 Optional<Element> elementOptional = elementRepo.findByCode(elm.getCode());
                 if (!elementOptional.isPresent()) {
-                    Type type = typeRepo.findByCode(elm.getTypeCode()).orElseThrow(() -> {
-                        throw new BusinessException(ResponseConstant.ELEMENT_EXIST, ResponseConstantMessage.ELEMENT_EXIST);
-                    });
                     Element element = new Element();
-                    element.setType(type);
+                    element.setRoot(elementRepo.findByCode(elm.getRootCode()).get());
                     element.setName(elm.getName());
                     element.setCode(elm.getCode());
                     elementRepo.save(element);

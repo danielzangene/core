@@ -1,6 +1,6 @@
 package ir.netrira.core.models;
 
-import ir.netrira.core.application.utils.DateUtil;
+import ir.netrira.core.application.utils.calendar.DateUtil;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;

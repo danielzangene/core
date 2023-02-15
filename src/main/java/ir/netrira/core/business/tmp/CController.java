@@ -1,13 +1,13 @@
 package ir.netrira.core.business.tmp;
 
-import ir.netrira.core.filter.utils.JwtUtils;
+import ir.netrira.core.application.filter.auth.util.JwtUtils;
 import ir.netrira.core.ResponseConstant;
 import ir.netrira.core.ResponseConstantMessage;
-import ir.netrira.core.exception.DataResponse;
-import ir.netrira.core.filter.dto.response.LoginResponse;
-import ir.netrira.core.filter.dto.request.LoginRequest;
-import ir.netrira.core.filter.repository.UserRepository;
-import ir.netrira.core.filter.services.UserDetailsImpl;
+import ir.netrira.core.application.dto.DataResponse;
+import ir.netrira.core.application.filter.auth.dto.response.LoginResponse;
+import ir.netrira.core.application.filter.auth.dto.request.LoginRequest;
+import ir.netrira.core.application.filter.auth.repository.UserRepository;
+import ir.netrira.core.application.filter.auth.dto.UserDetailsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -47,7 +47,7 @@ public class CController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken();
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        UserDetailsDto userDetails = (UserDetailsDto) authentication.getPrincipal();
         return ResponseEntity.ok(new DataResponse(ResponseConstant.SC_OK, ResponseConstantMessage.SC_OK,
                 new LoginResponse(jwt)));
     }

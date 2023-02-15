@@ -1,6 +1,6 @@
 package ir.netrira.core.business.personnel.personnel;
 
-import ir.netrira.core.models.personnel.personnel.User;
+import ir.netrira.core.models.application.personnel.User;
 import org.springframework.stereotype.Service;
 
 @Service

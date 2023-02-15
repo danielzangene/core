@@ -2,9 +2,9 @@ package ir.netrira.core.business.personnel.personnel;
 
 import ir.netrira.core.ResponseConstant;
 import ir.netrira.core.ResponseConstantMessage;
-import ir.netrira.core.exception.BusinessException;
-import ir.netrira.core.filter.services.UserDetailsImpl;
-import ir.netrira.core.models.personnel.personnel.User;
+import ir.netrira.core.application.exception.BusinessException;
+import ir.netrira.core.application.filter.auth.dto.UserDetailsDto;
+import ir.netrira.core.models.application.personnel.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +27,7 @@ public class UserOperational implements UserService {
     @Override
     public User getCurrentUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        UserDetailsDto userDetails = (UserDetailsDto) authentication.getPrincipal();
         return getUserByUsername(userDetails.getUsername());
     }
 }
