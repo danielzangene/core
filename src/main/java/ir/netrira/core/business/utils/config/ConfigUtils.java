@@ -50,7 +50,7 @@ public class ConfigUtils {
     public static Config saveConfig(String code, Config root, Object value) {
         Config configModel = new Config()
                 .setCode(code)
-                .setValue(getJson(value))
+                .setValue(Objects.nonNull(value) ? getJson(value) : null)
                 .setRoot(root);
         return configModelRepository.save(configModel);
     }

@@ -1,12 +1,11 @@
-package ir.netrira.core.business.utils.config;
+package ir.netrira.core.business.management.config;
 
 import ir.netrira.core.application.dto.DataResponse;
 import ir.netrira.core.application.filter.auth.repository.UserRepository;
 import ir.netrira.core.application.filter.auth.util.JwtUtils;
-import ir.netrira.core.business.utils.config.dto.ConfigRequest;
-import ir.netrira.core.business.utils.config.dto.ConfigResponse;
-import ir.netrira.core.business.utils.config.dto.FormulaConfigDto;
-import ir.netrira.core.models.application.utils.Config;
+import ir.netrira.core.business.management.config.dto.ConfigRequest;
+import ir.netrira.core.business.management.config.dto.ConfigResponse;
+import ir.netrira.core.business.utils.config.ConfigUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

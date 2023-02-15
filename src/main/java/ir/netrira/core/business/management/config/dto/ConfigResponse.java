@@ -1,4 +1,4 @@
-package ir.netrira.core.business.utils.config.dto;
+package ir.netrira.core.business.management.config.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ir.netrira.core.models.application.utils.Config;
