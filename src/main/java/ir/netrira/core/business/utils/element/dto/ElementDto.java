@@ -1,6 +1,6 @@
-package ir.netrira.core.application.utils.element.dto;
+package ir.netrira.core.business.utils.element.dto;
 
-import ir.netrira.core.application.utils.element.Element;
+import ir.netrira.core.models.application.utils.Element;
 
 public class ElementDto {
 

@@ -1,4 +1,4 @@
-package ir.netrira.core.application.utils.config.dto;
+package ir.netrira.core.business.utils.config.dto;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

@@ -1,12 +1,7 @@
-package ir.netrira.core.application.utils.calendar;
+package ir.netrira.core.business.utils.calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Component
 public class CalendarUtil {
@@ -17,18 +12,18 @@ public class CalendarUtil {
         CalendarUtil.calendarRepo = calendarRepo;
     }
 
-    public static Optional<Calendar> findByDate(String date) {
-        return calendarRepo.findById(date);
-    }
-
-    public static Calendar getCurrentDate() {
-        return calendarRepo.findById(DateUtil.getCurrentDate()).get();
-    }
-
-    public static List<Calendar> findAllByYearAndWeek(Integer year, Integer week) {
-        return StreamSupport.stream(calendarRepo.findByYearAndWeek(year, week).spliterator(), false)
-                .collect(Collectors.toList());
-    }
+//    public static Optional<Calendar> findByDate(String date) {
+//        return calendarRepo.findById(date);
+//    }
+//
+//    public static Calendar getCurrentDate() {
+//        return calendarRepo.findById(DateUtil.getCurrentDate()).get();
+//    }
+//
+//    public static List<Calendar> findAllByYearAndWeek(Integer year, Integer week) {
+//        return StreamSupport.stream(calendarRepo.findByYearAndWeek(year, week).spliterator(), false)
+//                .collect(Collectors.toList());
+//    }
 //
 //    public static List<Calendar> findAllByYearAndMonth(Integer year, Integer month) {
 //        return calendarRepo.findAllByYearAndMonth(year, month);

@@ -1,4 +1,4 @@
-package ir.netrira.core.application.utils.calendar;
+package ir.netrira.core.business.utils.calendar;
 
 import com.ghasemkiani.util.SimplePersianCalendar;
 import java.util.Calendar ;
@@ -127,7 +127,7 @@ public class DateUtil {
         return persianMoths[month] + " ماه";
     }
 
-    public static String getFormattedWeek(List<ir.netrira.core.application.utils.calendar.Calendar> days) {
+    public static String getFormattedWeek(List<ir.netrira.core.models.application.utils.Calendar> days) {
         String[] splittedFirstDate = days.get(0).getDate().split("/");
         String[] splittedLastDate = days.get(6).getDate().split("/");
         Integer firstDayMounth = Integer.valueOf(splittedFirstDate[1]);

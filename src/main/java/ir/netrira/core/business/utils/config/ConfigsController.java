@@ -1,10 +1,12 @@
-package ir.netrira.core.application.utils.config.dto;
+package ir.netrira.core.business.utils.config;
 
-import ir.netrira.core.application.utils.config.ConfigModel;
-import ir.netrira.core.application.utils.config.ConfigUtils;
 import ir.netrira.core.application.dto.DataResponse;
 import ir.netrira.core.application.filter.auth.repository.UserRepository;
 import ir.netrira.core.application.filter.auth.util.JwtUtils;
+import ir.netrira.core.business.utils.config.dto.ConfigRequest;
+import ir.netrira.core.business.utils.config.dto.ConfigResponse;
+import ir.netrira.core.business.utils.config.dto.FormulaConfigDto;
+import ir.netrira.core.models.application.utils.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,9 +34,6 @@ public class ConfigsController {
 
     @PatchMapping("/all")
     public ResponseEntity<?> allRootConfigs() {
-        FormulaConfigDto formulaConfigDto = new FormulaConfigDto().setExpression("cos(a*x)").setArgument(Arrays.asList("a", "x"));
-        ConfigModel formulas = new ConfigModel().setCode("FORMULAS");
-        ConfigModel testFormula = ConfigUtils.saveConfig("testFormula", formulas.getId(), formulaConfigDto);
         return ResponseEntity.ok(DataResponse.SUCCESS_RESPONSE.setResultData(ConfigUtils.getAllMainNodes()));
     }
 

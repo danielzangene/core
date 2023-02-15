@@ -1,19 +1,18 @@
-package ir.netrira.core.application.utils.calendar;
+package ir.netrira.core.business.utils.calendar;
 
+import ir.netrira.core.models.application.utils.Calendar;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CalendarRepo extends CrudRepository<Calendar, String> {
+public interface CalendarRepo extends CrudRepository<Calendar, Long> {
 
     Optional<Calendar> findByDate(String date);
-
-    List<Calendar> findByYearAndWeek(@Param("year") Integer year,@Param("week")  Integer week);
-
+//
+//    List<Calendar> findByYearAndWeek(@Param("year") Integer year,@Param("week")  Integer week);
+//
 //    List<Calendar> findAllByYearAndMonth(Integer year, Integer week);
 //
 //    @Query("SELECT cal.date FROM Calendar cal " +
