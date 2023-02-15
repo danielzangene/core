@@ -9,7 +9,10 @@ import javax.persistence.*;
 @Accessors(chain = true)
 @Setter
 @Entity
-@Table(name = "t_Config")
+@Table(name = "t_Config",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"c_code", "c_root"})
+        })
 public class Config extends SimpleEntity {
 
     private String code;
@@ -25,6 +28,7 @@ public class Config extends SimpleEntity {
     public String getValue() {
         return value;
     }
+
     @ManyToOne()
     @JoinColumn(name = "c_root")
     public Config getRoot() {
