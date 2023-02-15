@@ -71,6 +71,12 @@ public class ConfigUtils {
         );
     }
 
+    public static Config getConfig(String code) {
+        return configModelRepository.findByCode(code).orElseThrow(
+                () -> new BusinessException(ResponseConstant.CONFIG_NOT_FOUND, ResponseConstantMessage.CONFIG_NOT_FOUND)
+        );
+    }
+
     public static List<Config> getConfigs(Long rootId) {
         return configModelRepository.findAllByRoot_Id(rootId);
     }
