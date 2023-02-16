@@ -19,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,7 +65,7 @@ public class AccessFilter extends OncePerRequestFilter {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = FilterCodes.ANONYMOUS_USER;
         if (!isAnonymousUser()) username = ((UserDetailsDto) authentication.getPrincipal()).getUsername();
-        List<SystemAccess> systemAccesses = systemAccessRepository.userHasAccess(username, method, uri);
+        List<SystemAccess> systemAccesses = Arrays.asList();//systemAccessRepository.userHasAccess(username, method, uri);
         return !systemAccesses.isEmpty();
     }
 

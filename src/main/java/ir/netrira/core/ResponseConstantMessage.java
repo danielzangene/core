@@ -54,6 +54,7 @@ public interface ResponseConstantMessage {
     String CAPTCHA_NOT_FOUND = "مدت زمان استفاده از عبارت امنیتی منقضی شده، لطفا مجدد امتحان کتید.";
 
     String ELEMENT_EXIST  = "ایدی لاگ مورد نظر به درستی وارد نشده.";
+    String ELEMENT_CODE_NOT_EXIST  = "کد مورد نظر یافت نشد.";
     String CONFIG_NOT_FOUND  = "تنظیمات مورد نظر یافت نشد.";
     String CAN_NOT_CONVERT_TO_JSON  = "مشکلی در تبدیل اطلاعات به فرمت json پیش آمده.";
 }

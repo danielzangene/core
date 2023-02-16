@@ -1,12 +1,16 @@
 package ir.netrira.core.business;
 
 import ir.netrira.core.application.filter.access.AccessFilter;
-import ir.netrira.core.models.application.utils.Calendar;
+import ir.netrira.core.application.filter.access.GroupSystemAccessRepository;
+import ir.netrira.core.application.filter.access.SystemAccessRepository;
+import ir.netrira.core.business.personnel.PersonnelCode;
 import ir.netrira.core.business.utils.calendar.CalendarRepo;
 import ir.netrira.core.business.utils.calendar.DateUtil;
-import ir.netrira.core.models.application.utils.Element;
 import ir.netrira.core.business.utils.element.ElementRepo;
-import ir.netrira.core.business.utils.element.dto.ElementDto;
+import ir.netrira.core.models.application.systemaccess.GroupSystemAccess;
+import ir.netrira.core.models.application.systemaccess.SystemAccess;
+import ir.netrira.core.models.application.utils.Calendar;
+import ir.netrira.core.models.application.utils.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +26,28 @@ public class Initializer {
 
     @Autowired
     ElementRepo elementRepo;
+
+    @Autowired
+    SystemAccessRepository systemAccessRepository;
+
+    @Autowired
+    GroupSystemAccessRepository groupSystemAccessRepository;
+
     @Autowired
     CalendarRepo calendarRepo;
 
-    private List<ElementDto> elements = new LinkedList<>();
+    private List<Element> elements = new LinkedList<>();
+    private List<SystemAccess> systemAccesses = new LinkedList<>();
+    private List<GroupSystemAccess> groupSystemAccesses = new LinkedList<>();
 
 
     @PostConstruct
     private void init() {
 
 //        initElement();
+//        initSystemAccess();
+//        initGroupSystemAccess();
+//        initGroupSystemAccessAssign();
 //        initCalendar();
     }
 
@@ -90,26 +106,74 @@ public class Initializer {
 
 
     private void addElement() {
+        elements.add(new Element("ماکرو سیستم", PersonnelCode.MACRO_USER, PersonnelCode.USER_ROLE));
+        elements.add(new Element("مدیر سیستم", PersonnelCode.SUPER_ADMIN_USER, PersonnelCode.USER_ROLE));
+        elements.add(new Element("مدیر ارشد", PersonnelCode.ADMIN_USER, PersonnelCode.USER_ROLE));
+        elements.add(new Element("مدیر شعبه", PersonnelCode.MANAGER_USER, PersonnelCode.USER_ROLE));
+        elements.add(new Element("تحلیلگر", PersonnelCode.ANALYST_USER, PersonnelCode.USER_ROLE));
+        elements.add(new Element("مدیر مالی", PersonnelCode.FINANCIAL_MANAGER_USER, PersonnelCode.USER_ROLE));
+    }
 
+    private void addGroupSystemAccess() {
+        groupSystemAccesses.add(new GroupSystemAccess("ماکرو سیستم", PersonnelCode.MACRO_USER, Arrays.asList()));
+        groupSystemAccesses.add(new GroupSystemAccess("مدیر سیستم", PersonnelCode.SUPER_ADMIN_USER, Arrays.asList()));
+        groupSystemAccesses.add(new GroupSystemAccess("مدیر ارشد", PersonnelCode.ADMIN_USER, Arrays.asList()));
+        groupSystemAccesses.add(new GroupSystemAccess("مدیر شعبه", PersonnelCode.MANAGER_USER, Arrays.asList()));
+        groupSystemAccesses.add(new GroupSystemAccess("تحلیلگر", PersonnelCode.ANALYST_USER, Arrays.asList()));
+        groupSystemAccesses.add(new GroupSystemAccess("مدیر مالی", PersonnelCode.FINANCIAL_MANAGER_USER, Arrays.asList()));
+    }
+
+    private void addSystemAccess() {
+        systemAccesses.add(new SystemAccess("POST", "/api/test", "test"));
     }
 
     private void initElement() {
         addElement();
-        for (ElementDto elm : elements) {
+        for (Element e : elements) {
             try {
-                Optional<Element> elementOptional = elementRepo.findByCode(elm.getCode());
+                Optional<Element> elementOptional = elementRepo.findByCode(e.getCode());
                 if (!elementOptional.isPresent()) {
                     Element element = new Element();
-                    element.setRoot(elementRepo.findByCode(elm.getRootCode()).get());
-                    element.setName(elm.getName());
-                    element.setCode(elm.getCode());
+                    element.setRootCode(e.getRootCode());
+                    element.setName(e.getName());
+                    element.setCode(e.getCode());
                     elementRepo.save(element);
                     logger.info("ELEMENT PERSISTS: " + element.getCode());
                 }
-            } catch (Exception e) {
-                logger.error("ELEMENT NOT PERSISTS: " + elm.getCode());
+            } catch (Exception exception) {
+                logger.error("ELEMENT NOT PERSISTS: " + e.getCode());
             }
         }
+        logger.error("ALL ELEMENTS PERSIST.");
+    }
+
+    private void initSystemAccess() {
+        addSystemAccess();
+        for (SystemAccess access : systemAccesses) {
+            try {
+                systemAccessRepository.save(access);
+                logger.info("SystemAccess PERSISTS: " + access.getMethod() + "/" + access.getRequestUri());
+            } catch (Exception exception) {
+                logger.error("SystemAccess NOT PERSISTS: " + access.getMethod() + "/" + access.getRequestUri());
+            }
+        }
+        logger.error("ALL SystemAccess PERSIST.");
+    }
+    private void initGroupSystemAccess() {
+        addGroupSystemAccess();
+        for (GroupSystemAccess groupAccess : groupSystemAccesses) {
+            try {
+                groupSystemAccessRepository.save(groupAccess);
+                logger.info("GroupSystemAccess PERSISTS: " + groupAccess.getName());
+            } catch (Exception exception) {
+                logger.error("GroupSystemAccess NOT PERSISTS: " + groupAccess.getName());
+            }
+        }
+        logger.error("ALL GroupSystemAccess PERSIST.");
+    }
+
+    private void initGroupSystemAccessAssign() {
+
     }
 
     public static interface StaticValues {

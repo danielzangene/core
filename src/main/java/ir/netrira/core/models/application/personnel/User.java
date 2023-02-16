@@ -1,7 +1,10 @@
 package ir.netrira.core.models.application.personnel;
 
+import ir.netrira.core.business.utils.element.ElementUtils;
 import ir.netrira.core.models.BaseEntity;
 import ir.netrira.core.models.application.systemaccess.GroupSystemAccess;
+import ir.netrira.core.models.application.utils.Element;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -14,6 +17,7 @@ import java.util.List;
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "username")
         })
+@NoArgsConstructor
 public class User extends BaseEntity {
 
     @NotBlank
@@ -33,45 +37,14 @@ public class User extends BaseEntity {
     @Size(max = 1000)
     private String name;
 
-//    @NotBlank
-//    @Size(max = 1000)
-    private String role;
-
-    private User supervisor;
-
-    private List<GroupSystemAccess> groupAccess;
-
-    public User() {
-    }
+    private Element role;
 
     public User(String username, String email, String password, String name, String role) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.name = name;
-        this.role = role;
-    }
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "c_supervisor")
-    public User getSupervisor() {
-        return supervisor;
-    }
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "mm_userGroupAccess",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "group_id"))
-    public List<GroupSystemAccess> getGroupAccess() {
-        return groupAccess;
-    }
-
-    public void setSupervisor(User supervisor) {
-        this.supervisor = supervisor;
-    }
-
-    public void setGroupAccess(List<GroupSystemAccess> groupAccess) {
-        this.groupAccess = groupAccess;
+        this.role = ElementUtils.getElement(role);
     }
 
     public String getUsername() {
@@ -106,11 +79,13 @@ public class User extends BaseEntity {
         this.name = name;
     }
 
-    public String getRole() {
+    @ManyToOne
+    @JoinColumn(name = "c_role")
+    public Element getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Element role) {
         this.role = role;
     }
 }

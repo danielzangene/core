@@ -11,7 +11,6 @@ import java.util.Optional;
 public interface ElementRepo extends CrudRepository<Element, String> {
 
     Optional<Element> findByCode(String code);
-    List<Element> findByRoot_Code(String code);
-    List<Element> findByRoot_Id(String id);
+    List<Element> findByRootCode(String code);
 
 }

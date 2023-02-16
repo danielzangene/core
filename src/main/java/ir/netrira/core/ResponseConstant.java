@@ -56,6 +56,7 @@ public interface ResponseConstant {
 
     // ** general business  1005000
     Integer ELEMENT_EXIST = 1005001;
+    Integer ELEMENT_CODE_NOT_EXIST = 1005004;
     Integer CONFIG_NOT_FOUND = 1005002;
     Integer CAN_NOT_CONVERT_TO_JSON = 1005003;
 
