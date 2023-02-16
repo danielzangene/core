@@ -24,7 +24,6 @@ public class User extends BaseEntity {
     @Size(max = 50)
     private String username;
 
-    @NotBlank
     @Size(max = 100)
     @Email
     private String email;
@@ -45,6 +44,14 @@ public class User extends BaseEntity {
         this.password = password;
         this.name = name;
         this.role = ElementUtils.getElement(role);
+    }
+
+    public User(String username, String email, String password, String name, Element role) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.role = role;
     }
 
     public String getUsername() {

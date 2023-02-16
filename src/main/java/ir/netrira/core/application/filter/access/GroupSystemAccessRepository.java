@@ -9,4 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface GroupSystemAccessRepository extends JpaRepository<GroupSystemAccess, Long> {
+    Optional<GroupSystemAccess> findByCode(String code);
 }

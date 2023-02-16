@@ -13,12 +13,11 @@ import java.util.Optional;
 @Repository
 public interface SystemAccessRepository extends JpaRepository<SystemAccess, Long> {
 
-//    @Query("SELECT systemAccess FROM User user " +
-//            "INNER JOIN user.groupAccess AS groupAccess " +
-//            "INNER JOIN groupAccess.accessList AS systemAccess " +
-//            "WHERE user = ?1 " +
-//            "AND systemAccess = ?2 ")
-//    List<SystemAccess> userHasAccess(@Param("user") User user, @Param("systemAccess") SystemAccess systemAccess);
+    @Query("SELECT accesses FROM GroupSystemAccess gsa " +
+            "INNER JOIN gsa.accessList AS accesses " +
+            "WHERE gsa.code = ?1 " +
+            "AND accesses.id = ?2 ")
+    List<SystemAccess> userHasAccess(@Param("groupCode") String groupAccessCode, @Param("systemAccessId") Long systemAccessId);
 //
 //    @Query("SELECT systemAccess FROM User user " +
 //            "INNER JOIN user.groupAccess AS groupAccess " +
