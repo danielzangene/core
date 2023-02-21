@@ -25,7 +25,7 @@ public interface ResponseConstantMessage {
     String SC_PAYMENT_REQUIRED = "";
     String SC_FORBIDDEN = "";
     String SC_NOT_FOUND = "";
-    String SC_METHOD_NOT_ALLOWED = "شما درسترسی به رابط کاربرد \"%s\" ندارید.";
+    String SC_METHOD_NOT_ALLOWED = "شما درسترسی به رابط کاربرد ' %s ' ندارید.";
     String SC_NOT_ACCEPTABLE = "";
     String SC_PROXY_AUTHENTICATION_REQUIRED = "";
     String SC_REQUEST_TIMEOUT = "";

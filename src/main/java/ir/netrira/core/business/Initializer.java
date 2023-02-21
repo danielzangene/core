@@ -53,11 +53,11 @@ public class Initializer {
     @PostConstruct
     private void init() {
 
-//        initElement();
-//        initSystemAccess();
-//        initGroupSystemAccess();
-//        initGroupSystemAccessAssign();
-//        initUsers();
+        initElement();
+        initSystemAccess();
+        initGroupSystemAccess();
+        initGroupSystemAccessAssign();
+        initUsers();
 //        initCalendar();
     }
 
@@ -135,7 +135,7 @@ public class Initializer {
     }
 
     private void addSystemAccess() {
-        systemAccesses.add(new SystemAccess("POST", "/api/test", "test"));
+        systemAccesses.add(new SystemAccess("POST", "/data/test", "test"));
     }
 
     private void initUsers() {

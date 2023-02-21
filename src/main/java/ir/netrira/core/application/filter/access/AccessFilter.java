@@ -45,13 +45,14 @@ public class AccessFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         logger.info(AccessFilter.class.toString());
         String method = request.getMethod();
-        String requestURI = request.getRequestURI().replaceAll("/$", "");
-        Optional<SystemAccess> systemAccess = systemAccessRepository.findByMethodAndRequestUri(method, requestURI);
-        if (systemAccess.isPresent()) {
-            if (hasPermission(systemAccess.get())) {
+        String uri = request.getRequestURI().replaceAll("/$", "");
+        Boolean systemAccessExist = SystemAccessUtils.isSystemAccessExist(method, uri);
+        if (systemAccessExist) {
+            if (hasPermission(method, uri)) {
                 filterChain.doFilter(request, response);
             } else {
-                Response responseObject = new Response(ResponseConstant.SC_METHOD_NOT_ALLOWED, getAccessMessageHandler(systemAccess.get().getName()));
+                SystemAccess systemAccess = SystemAccessUtils.getSystemAccess(method, uri);
+                Response responseObject = new Response(ResponseConstant.SC_METHOD_NOT_ALLOWED, getAccessMessageHandler(systemAccess.getName()));
                 new ObjectMapper().writeValue(response.getOutputStream(), responseObject);
             }
         } else {
@@ -77,11 +78,10 @@ public class AccessFilter extends OncePerRequestFilter {
         });
     }
 
-    private Boolean hasPermission(SystemAccess access) {
+    private Boolean hasPermission(String method, String uri) {
         if (isAnonymousUser()) return Boolean.FALSE;
         String code = getCurrentUser().getRole().getCode();
-        List<SystemAccess> systemAccesses = systemAccessRepository.userHasAccess(code, access.getId());
-        return !systemAccesses.isEmpty();
+        return SystemAccessUtils.groupUserHasAccess(code, method,uri);
     }
 
     private String getAccessMessageHandler(String useCaseName) {
