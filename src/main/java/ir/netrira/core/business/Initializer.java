@@ -53,11 +53,11 @@ public class Initializer {
     @PostConstruct
     private void init() {
 
-        initElement();
-        initSystemAccess();
-        initGroupSystemAccess();
-        initGroupSystemAccessAssign();
-        initUsers();
+//        initElement();
+//        initSystemAccess();
+//        initGroupSystemAccess();
+//        initGroupSystemAccessAssign();
+//        initUsers();
 //        initCalendar();
     }
 

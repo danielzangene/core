@@ -2,7 +2,6 @@ package ir.netrira.core.models.application.personnel;
 
 import ir.netrira.core.business.utils.element.ElementUtils;
 import ir.netrira.core.models.BaseEntity;
-import ir.netrira.core.models.application.systemaccess.GroupSystemAccess;
 import ir.netrira.core.models.application.utils.Element;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +9,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 @Entity
 @Table(name = "t_User",
